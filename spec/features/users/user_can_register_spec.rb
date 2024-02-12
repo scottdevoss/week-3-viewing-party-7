@@ -9,6 +9,8 @@ RSpec.describe "Registration Happy Path" do
     fill_in :user_password, with: "golf123"
     fill_in :user_password_confirmation, with: "golf123"
 
+    click_on "Create New User"
+
     expect(current_path).to eq("/users/#{User.last.id}")
   end
 end
