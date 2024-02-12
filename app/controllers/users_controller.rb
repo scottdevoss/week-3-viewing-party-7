@@ -11,14 +11,20 @@ class UsersController <ApplicationController
     user = User.create(user_params)
     if user.save
       redirect_to user_path(user)
-    elsif params[:password] != params[:password_confirmation]
-      redirect_to register_path
-      flash[:alert] = "Password confirmation doesn't match Password"
     else  
       flash[:error] = user.errors.full_messages.to_sentence
       redirect_to register_path
     end 
   end 
+
+  def login_form
+
+  end
+
+  def login
+    user = User.find_by(email: params[:email])
+    redirect_to user_path(user)
+  end
 
   private 
 
