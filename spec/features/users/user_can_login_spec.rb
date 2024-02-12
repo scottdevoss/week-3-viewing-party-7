@@ -44,7 +44,7 @@ RSpec.describe "User Log In" do
 
     click_button "Log In"
 
-    expect(current_path).to eq(login_path)
     expect(page).to have_content("Invalid credentials")
+    expect(current_path).to eq(login_path)
   end
 end 
