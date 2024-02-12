@@ -25,4 +25,26 @@ RSpec.describe "User Log In" do
 
     expect(current_path).to eq("/users/#{@user.id}")
   end
+
+  it "Logging In Sad Path" do
+    # As a registered user
+    # When I visit the landing page `/`
+    # And click on the link to go to my dashboard
+    # And fail to fill in my correct credentials 
+    # I'm taken back to the Log In page
+    # And I can see a flash message telling me that I entered incorrect credentials.
+    @user = User.create!(name: "Peyton Manning", email: "peyton@example.com", password: "football", password_confirmation: "football")
+
+    visit "/"
+
+    click_link "Log In"
+
+    fill_in :email, with: "peyton@example.com"
+    fill_in :password, with: "wrong_password"
+
+    click_button "Log In"
+
+    expect(current_path).to eq(login_path)
+    expect(page).to have_content("Invalid credentials")
+  end
 end 
