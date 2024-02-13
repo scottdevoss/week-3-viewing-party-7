@@ -11,6 +11,17 @@ RSpec.describe 'Movies Index Page' do
   end 
 
   it 'shows all movies' do 
+    visit "/"
+
+    click_on "Log In"
+
+    expect(current_path).to eq("/login")
+
+    fill_in :email, with: "#{@user1.email}"
+    fill_in :password, with: "#{@user1.password}"
+
+    click_button "Log In"
+    
     visit "users/#{@user1.id}"
 
     click_button "Find Top Rated Movies"

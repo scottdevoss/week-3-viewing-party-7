@@ -127,4 +127,21 @@ RSpec.describe "User Log In" do
     expect(page).to_not have_link("mahomies@example.com")
     expect(page).to_not have_link("peyton@example.com")
   end
+
+  it "Dashboard authorization" do
+    #   As a visitor
+    #   When I visit the landing page
+    #   And then try to visit the user's dashboard ('/users/:user_id')
+    #   I remain on the landing page
+    #   And I see a message telling me that I must be logged in or registered to access a user's dashboard.
+
+    @user = User.create!(name: "Peyton Manning", email: "peyton@example.com", password: "football", password_confirmation: "football")
+    @user2 = User.create!(name: "Patrick Mahomes", email: "mahomies@example.com", password: "football123", password_confirmation: "football123")
+
+    visit "/"
+
+    visit "/users/#{@user.id}"
+
+    expect(page).to have_content("You must be logged in or registered to access a user's dashboard")
+  end
 end 
