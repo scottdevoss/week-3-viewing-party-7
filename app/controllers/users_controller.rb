@@ -10,6 +10,7 @@ class UsersController <ApplicationController
   def create 
     user = User.create(user_params)
     if user.save
+      session[:user_id] = user.id
       redirect_to user_path(user)
     else  
       flash[:error] = user.errors.full_messages.to_sentence
@@ -22,16 +23,15 @@ class UsersController <ApplicationController
   end
 
   def login
-    
     user = User.find_by(email: params[:email])
     if user.authenticate(params[:password])
-      cookies.signed[:location] = params[:location]
+      session[:user_id] = user.id
+      cookies.signed[:location] = {value: params[:location], expires: 7.days}
       redirect_to user_path(user)
     else 
       flash[:error] = "Invalid credentials"
       render :login_form
     end
-
   end
 
   private 
