@@ -47,4 +47,43 @@ RSpec.describe "User Log In" do
     expect(current_path).to eq(login_path)
     expect(page).to have_content("Invalid credentials")
   end
+
+  it "User can log out" do
+    # As a logged-in user 
+    # When I visit the landing page
+    # I no longer see a link to Log In or Create an Account
+    # But I only see a link to Log Out.
+    # When I click the link to Log Out,
+    # I'm taken to the landing page
+    # And I see that the Log Out link has changed back to a Log In link
+    # And I still see the Create an Account button. 
+    @user = User.create!(name: "Peyton Manning", email: "peyton@example.com", password: "football", password_confirmation: "football")
+    
+    visit "/"
+
+    click_on "Log In"
+
+    expect(current_path).to eq("/login")
+
+    fill_in :email, with: "peyton@example.com"
+    fill_in :password, with: "football"
+
+    click_button "Log In"
+
+    expect(current_path).to eq("/users/#{@user.id}")
+
+    visit "/"
+
+    expect(page).to_not have_link("Log In")
+    expect(page).to_not have_button("Create New User")
+    expect(page).to have_link("Log Out")  
+
+    click_on "Log Out"
+
+    expect(current_path).to eq("/")
+
+    expect(page).to have_link("Log In")
+    expect(page).to have_button("Create New User")
+    expect(page).to_not have_link("Log Out")
+  end
 end 
