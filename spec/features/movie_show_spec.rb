@@ -21,7 +21,7 @@ RSpec.describe 'Movies Index Page' do
     fill_in :password, with: "#{@user1.password}"
 
     click_button "Log In"
-    
+
     visit "users/#{@user1.id}"
 
     click_button "Find Top Rated Movies"
@@ -40,4 +40,20 @@ RSpec.describe 'Movies Index Page' do
     expect(page).to have_content(movie_1.description)
     expect(page).to have_content(movie_1.rating)
   end 
+
+  it "Create a viewing party authorization" do
+    # As a visitor
+    # If I go to a movies show page ('/users/:user_id/movies/:movie_id')
+    # And click the button to Create a Viewing Party
+    # I'm redirected back to the movies show page, and a message appears to let me know I must be logged in or registered to create a Viewing Party.
+    movie_1 = Movie.first
+    
+    visit "/users/#{@user1.id}/movies/#{movie_1.id}"  
+    
+    click_button "Create a Viewing Party"
+
+    expect(current_path).to eq("/users/#{@user1.id}/movies/#{movie_1.id}")
+    
+    expect(page).to have_content("You must be logged in or registered to create a Viewing Party")
+  end
 end
