@@ -26,8 +26,8 @@ class UsersController <ApplicationController
     if user.authenticate(params[:password])
       redirect_to user_path(user)
     else 
-      render :login_form
       flash[:error] = "Invalid credentials"
+      render :login_form
     end
   end
 
