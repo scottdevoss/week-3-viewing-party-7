@@ -86,4 +86,10 @@ RSpec.describe "User Log In" do
     expect(page).to have_button("Create New User")
     expect(page).to_not have_link("Log Out")
   end
+
+  it "logged out users see limited info on landing page" do
+    visit "/"
+
+    expect(page).to_not have_content("Existing Users:")
+  end
 end 
