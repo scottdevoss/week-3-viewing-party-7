@@ -1,13 +1,8 @@
 class ViewingPartiesController < ApplicationController 
-  # before_action :require_user, only: :new
+  before_action :require_user, only: :new
   def new
     @user = User.find(params[:user_id])
     @movie = Movie.find(params[:movie_id])
-    # require 'pry'; binding.pry
-    if !session[:user_id]
-      flash[:error] = "You must be logged in or registered to create a Viewing Party"
-      redirect_to "/users/#{@user.id}/movies/#{@movie.id}"
-    end
   end 
   
   def create 
@@ -22,10 +17,12 @@ class ViewingPartiesController < ApplicationController
     params.permit(:movie_id, :duration, :date, :time)
   end 
 
-  # def require_user
-  #   if !session[:user_id]
-  #     flash[:error] = "You must be logged in or registered to create a Viewing Party"
-  #     redirect_to "/users/#{@user.id}/movies/#{@movie.id}"
-  #   end
-  # end
+  def require_user
+    @user = User.find(params[:user_id])
+    @movie = Movie.find(params[:movie_id])
+    if !session[:user_id]
+      flash[:error] = "You must be logged in or registered to create a Viewing Party"
+      redirect_to "/users/#{@user.id}/movies/#{@movie.id}"
+    end
+  end
 end 
